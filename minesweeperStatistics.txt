@@ -1,0 +1,6 @@
+https://minesweeper.online/en/statistics
+I think these are of all the people all told, so not a very 
+good score to compare to.
+
+Another place to look for program statistics is:
+https://math.stackexchange.com/questions/42494/odds-of-winning-at-minesweeper-with-perfect-play

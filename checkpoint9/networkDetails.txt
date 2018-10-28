@@ -1,0 +1,49 @@
+Network details: no relu at the dense layers and training on exp of the board
+trained on 400,000 games (90% for training 10% for validation)
+and with 10 epochs
+success rate: 0.693
+with auto open zero neighbors: 0.701
+CNet.summary():
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1 (Conv2D)               (None, 14, 14, 32)        320       
+_________________________________________________________________
+conv2 (Conv2D)               (None, 12, 12, 64)        18496     
+_________________________________________________________________
+conv3 (Conv2D)               (None, 10, 10, 128)       73856     
+_________________________________________________________________
+deconv1 (Conv2DTranspose)    (None, 12, 12, 128)       147584    
+_________________________________________________________________
+deconv2 (Conv2DTranspose)    (None, 14, 14, 128)       147584    
+_________________________________________________________________
+deconv3 (Conv2DTranspose)    (None, 16, 16, 64)        73792     
+_________________________________________________________________
+dense1 (Dense)               (None, 16, 16, 1)         65        
+=================================================================
+Total params: 461,697
+Trainable params: 461,697
+Non-trainable params: 0
+
+training: looks like there was a very small amount of overfitting. Not something drastic.
+Epoch 6/10
+360000/360000 [==============================] - 2475s 7ms/step - loss: 0.0431 - acc: 0.9421 - val_loss: 0.0436 - val_acc: 0.9415
+
+Epoch 00006: saving model to .\checkpoint9\cp.ckpt
+Epoch 7/10
+360000/360000 [==============================] - 2460s 7ms/step - loss: 0.0427 - acc: 0.9426 - val_loss: 0.0431 - val_acc: 0.9420
+
+Epoch 00007: saving model to .\checkpoint9\cp.ckpt
+Epoch 8/10
+360000/360000 [==============================] - 2460s 7ms/step - loss: 0.0424 - acc: 0.9429 - val_loss: 0.0429 - val_acc: 0.9423
+
+Epoch 00008: saving model to .\checkpoint9\cp.ckpt
+Epoch 9/10
+360000/360000 [==============================] - 2461s 7ms/step - loss: 0.0422 - acc: 0.9432 - val_loss: 0.0428 - val_acc: 0.9423
+
+Epoch 00009: saving model to .\checkpoint9\cp.ckpt
+Epoch 10/10
+360000/360000 [==============================] - 2465s 7ms/step - loss: 0.0420 - acc: 0.9435 - val_loss: 0.0426 - val_acc: 0.9427
+
+
+
