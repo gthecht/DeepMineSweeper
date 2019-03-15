@@ -354,15 +354,6 @@ CNet.fit(trainDat, trainSol, epochs = 10, batch_size = 128,
     359936/360000 [============================>.] - ETA: 0s - loss: 0.0420 - acc: 0.9434
     Epoch 00010: saving model to .\checkpoint9\cp.ckpt
     360000/360000 [==============================] - 1675s 5ms/sample - loss: 0.0420 - acc: 0.9434 - val_loss: 0.0421 - val_acc: 0.9433
-    
-
-
-
-
-    <tensorflow.python.keras.callbacks.History at 0x119cda694a8>
-
-
-
 
 ```python
 #%% Test:
