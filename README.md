@@ -291,12 +291,6 @@ CNet.fit(trainDat, trainSol, epochs = 10, batch_size = 128,
          validation_data = (validDat, validSol), callbacks = [cp_callback])
 ```
 
-    WARNING:tensorflow:From C:\Anaconda\envs\tf-cpu\lib\site-packages\tensorflow\python\ops\resource_variable_ops.py:435: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Colocations handled automatically by placer.
-    WARNING:tensorflow:From C:\Anaconda\envs\tf-cpu\lib\site-packages\tensorflow\python\keras\utils\losses_utils.py:170: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Use tf.cast instead.
     CNet.summary():
     _________________________________________________________________
     Layer (type)                 Output Shape              Param #   
@@ -320,15 +314,9 @@ CNet.fit(trainDat, trainSol, epochs = 10, batch_size = 128,
     Non-trainable params: 0
     _________________________________________________________________
     Train on 360000 samples, validate on 40000 samples
-    WARNING:tensorflow:From C:\Anaconda\envs\tf-cpu\lib\site-packages\tensorflow\python\ops\math_ops.py:3066: to_int32 (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Use tf.cast instead.
     Epoch 1/10
     359936/360000 [============================>.] - ETA: 0s - loss: 0.0630 - acc: 0.9140
     Epoch 00001: saving model to .\checkpoint9\cp.ckpt
-    WARNING:tensorflow:From C:\Anaconda\envs\tf-cpu\lib\site-packages\tensorflow\python\keras\engine\network.py:1436: update_checkpoint_state (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
-    Instructions for updating:
-    Use tf.train.CheckpointManager to manage checkpoints rather than manually editing the Checkpoint proto.
     360000/360000 [==============================] - 1740s 5ms/sample - loss: 0.0630 - acc: 0.9140 - val_loss: 0.0510 - val_acc: 0.9308
     Epoch 2/10
     359936/360000 [============================>.] - ETA: 0s - loss: 0.0490 - acc: 0.9339
@@ -428,5 +416,30 @@ test = testCNet(testN, showOutcome, open0, boardSize, mineNum, imgPath, expFlag)
 ![png](output_14_1.png)
 
 
-## I tried various networks:
+## Work process:
+During training, I played around with the network size, the number of board examples, and the number of epochs. All this brought to the success rate to around 50%. a larger size of network mostly overfitted the boards, or at the very least didn't improve the success-rate.
+Looking at the network's solutions, I realized that it didn't open all the neighbours of the squares with 0 in them. This is because the network is a convloutional one, and therefore only sums up and multiplies the numbers. I wanted the 0's to pull the output down.
+Finally, I hit upon the idea of changing the input. instead of simply 0-8 as the input (the number of neighboring mines), I used the following formula:
+$input=\log_{10}{(neighbors+0.1)}$
+This simple transoformation raised the success-rate by approximately 15%. AS you can see in the example above, it doesn't always do it, but much more often than previously.
+I also think that in this particular instance, the training didn't go that well. I got success-rates nearer to 70% in the past.
+I also realize that you can describe the numbers as a 10x1 vector, and then the input is a tensor of size: 16x16x10, and works like an image with 10 colors. But this is more interesting and probably also demands a smaller network and less training.
 
+## Why is 66% is good enough for me
+Quite early on, I realised that the success rate of solving minesweeper can't possibly reach 100% because its a game where one has to make guesses a few times.
+I looked for statistics on the winning of minesweeper games and arrived at ![this place:](https://math.stackexchange.com/questions/42494/odds-of-winning-at-minesweeper-with-perfect-play).
+Specifically, I found one who wrote a program that solves minesweeper, by writing all the rules for whether there is a mine in any square. He writes specifically that his program solves the intermediate level at a 69% success-rate, and therefore my goal was to get as near as possible to 70%.
+### Remarks on the statistics of minesweeper, copied from 'Mathematics stack exchange':
+> So I tried writing a program to play against minesweeper. I made a minesweeper game with the usual 9x9 with 10mines or 16x16 with 40 or 30x16 at 99mines and the rule that you can never lose on the first move (the mine is moved randomly if it should be hit on first move.)
+
+>My play algorithm tries the following on each move, using the first success: 1. find easy no-mine spots (known mines=mine readouts) 2. Find spot pairs with 50% chance of a mines, make two copies of the screen, and set each copy (A or B) with the mine at one of the two location alternatives. The choice then forces other spots to be mines or not. Find all the other spots that are determined by the 50/50 selection. Branch on the three possibilities: a) position A or B cause there to be too many mines somewhere, meaning that one of the positions is impossible and the other is correct; or b) Both seem possible. On b) compare the two case results and look for spots that are open in both cases and return these as the play. This picks up things like 111 running in from an edge where the third 1 in cannot be a mine. 3. If b) occurs but there are no common open spots, search for the next 50%/50% pair and repeat 2. 4. If all 50%/50% spots fail to give a move, guess, selecting amongst the covered spots, initially requiring the chosen spots to be fully surrounded so the risk is mines/total spots in the sequence: a) corners b) edges c)rest of spots. If there are no fully surrounded spots: d) choose least likely to be a mine.
+
+>Using this algorithm I get 89.9% wins for the beginner game and 69.0% for the intermediate game. All of the losses happen on guesses. For the expert game I only win 17.9% of games.
+
+>The distribution of guesses (after the first move) for the intermediate game is in 1000 games is 0=283,1=313,2=191,3=97,4=45,5=31,6=31,7=12,8=4,>8=10 . The distribution of guesses for lost games is 0=0,1=135,2=72,3=39,4=27,5=19,6=6,7=8,8=1,>8=3. The intermediate win rate 69% is less than (90% of) what you would expect for the number of guesses= (216/256)^1.618=76.0% This may be due to ambiguous 50%/505 cases in the endgame.
+
+>For the expert game the distribution of guesses at T 3.59 guesses/game is 0=19,1=236,2=206,3=151,4=124,5=73,6=41,7=50,8=34,>8=66
+
+>It would be interesting to count how many of the losses involve guesses at 50%/50% spots - the indeterminate spot patterns. I'll work on it.
+## Final word
+So hopefully it was an interesting read. If you have any questions or comments feel free!
