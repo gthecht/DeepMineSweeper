@@ -406,7 +406,7 @@ This simple transoformation raised the success-rate by approximately 15%. AS you
 I also think that in this particular instance, the training didn't go that well. I got success-rates nearer to 70% in the past.
 I also realize that you can describe the numbers as a 10x1 vector, and then the input is a tensor of size: 16x16x10, and works like an image with 10 colors. But this is more interesting and probably also demands a smaller network and less training.
 
-## Why is 66% is good enough for me
+## Why 66% is good enough for me:
 Quite early on, I realised that the success rate of solving minesweeper can't possibly reach 100% because its a game where one has to make guesses a few times.
 I looked for statistics on the winning of minesweeper games and arrived at ![this place:](https://math.stackexchange.com/questions/42494/odds-of-winning-at-minesweeper-with-perfect-play).
 Specifically, I found one who wrote a program that solves minesweeper, by writing all the rules for whether there is a mine in any square. He writes specifically that his program solves the intermediate level at a 69% success-rate, and therefore my goal was to get as near as possible to 70%.
