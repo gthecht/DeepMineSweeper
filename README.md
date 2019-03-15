@@ -249,7 +249,8 @@ board = createBoard(boardSize, mineNum)
 imgPath = '.\\MineSweeper' # the path where the images of the 
 boardImg = drawBoard(board, imgPath) # draw the board in an understandable manner
 ```
-
+### Example of board
+Here we can see what a board looks like - the red stars are mines.
 
 ![png](output_10_0.png)
 
@@ -290,6 +291,8 @@ CNet = createCNN(boardSize)
 CNet.fit(trainDat, trainSol, epochs = 10, batch_size = 128, 
          validation_data = (validDat, validSol), callbacks = [cp_callback])
 ```
+### Training the network
+The layers used, and the training details:
 
     CNet.summary():
     _________________________________________________________________
@@ -384,10 +387,11 @@ showOutcome = 0
 open0 = 1
 test = testCNet(testN, showOutcome, open0, boardSize, mineNum, imgPath, expFlag)
 ```
-
-    0.662
 ### Test statistics
-Histogram of games ended after n steps. Note that the majority are indeed solved.
+Success rate:
+    0.662
+
+Histogram of games ended after n steps. Note that the majority are indeed solved:
 
 
 ![png](output_14_1.png)
