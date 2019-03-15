@@ -408,7 +408,7 @@ I also realize that you can describe the numbers as a 10x1 vector, and then the 
 ## Why 66% is good enough for me:
 Quite early on, I realised that the success rate of solving minesweeper can't possibly reach 100% because its a game where one has to make guesses a few times.
 
-I looked for statistics on the winning of minesweeper games and arrived at * [this place:](https://math.stackexchange.com/questions/42494/odds-of-winning-at-minesweeper-with-perfect-play).
+I looked for statistics on the winning of minesweeper games and arrived at [this place:](https://math.stackexchange.com/questions/42494/odds-of-winning-at-minesweeper-with-perfect-play).
 
 Specifically, I found one who wrote a program that solves minesweeper, by writing all the rules for whether there is a mine in any square. He writes specifically that his program solves the intermediate level at a 69% success-rate, and therefore my goal was to get as near as possible to 70%.
 
