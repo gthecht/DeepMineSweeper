@@ -369,22 +369,7 @@ currSol = np.squeeze(testSol[ii,:,:])
 currOut = np.squeeze(testOut[ii,:,:])
 showPrediction(currGT, currBrd, currSol, currOut, threshold, imgPath)
 ```
-
-
-![png](output_13_0.png)
-
-
-
-![png](output_13_1.png)
-
-
-
-![png](output_13_2.png)
-
-
-
-![png](output_13_3.png)
-
+### Example for training board:
 
 
 ![png](output_13_4.png)
@@ -401,7 +386,8 @@ test = testCNet(testN, showOutcome, open0, boardSize, mineNum, imgPath, expFlag)
 ```
 
     0.662
-    
+### Test statistics
+Histogram of games ended after n steps. Note that the majority are indeed solved.
 
 
 ![png](output_14_1.png)
