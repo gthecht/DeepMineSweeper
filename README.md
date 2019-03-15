@@ -400,17 +400,19 @@ Histogram of games ended after n steps. Note that the majority are indeed solved
 ## Work process:
 During training, I played around with the network size, the number of board examples, and the number of epochs. All this brought to the success rate to around 50%. a larger size of network mostly overfitted the boards, or at the very least didn't improve the success-rate.
 Looking at the network's solutions, I realized that it didn't open all the neighbours of the squares with 0 in them. This is because the network is a convloutional one, and therefore only sums up and multiplies the numbers. I wanted the 0's to pull the output down.
-Finally, I hit upon the idea of changing the input. instead of simply 0-8 as the input (the number of neighboring mines), I used the following formula:
-$input=\log_{10}{(neighbors+0.1)}$
-This simple transoformation raised the success-rate by approximately 15%. AS you can see in the example above, it doesn't always do it, but much more often than previously.
+Finally, I hit upon the idea of changing the input. instead of simply 0-8 as the input (the number of neighboring mines), I used the following formula: *input = log<sub>10</sub>(neighbors+0.1)*. This simple transoformation raised the success-rate by approximately 15%. AS you can see in the example above, it doesn't always do it, but much more often than previously.
+
 I also think that in this particular instance, the training didn't go that well. I got success-rates nearer to 70% in the past.
 I also realize that you can describe the numbers as a 10x1 vector, and then the input is a tensor of size: 16x16x10, and works like an image with 10 colors. But this is more interesting and probably also demands a smaller network and less training.
 
 ## Why 66% is good enough for me:
 Quite early on, I realised that the success rate of solving minesweeper can't possibly reach 100% because its a game where one has to make guesses a few times.
-I looked for statistics on the winning of minesweeper games and arrived at ![this place:](https://math.stackexchange.com/questions/42494/odds-of-winning-at-minesweeper-with-perfect-play).
+
+I looked for statistics on the winning of minesweeper games and arrived at * [this place:](https://math.stackexchange.com/questions/42494/odds-of-winning-at-minesweeper-with-perfect-play).
+
 Specifically, I found one who wrote a program that solves minesweeper, by writing all the rules for whether there is a mine in any square. He writes specifically that his program solves the intermediate level at a 69% success-rate, and therefore my goal was to get as near as possible to 70%.
-### Remarks on the statistics of minesweeper, copied from 'Mathematics stack exchange':
+
+### *Remarks on the statistics of minesweeper, copied from 'Mathematics stack exchange':*
 > So I tried writing a program to play against minesweeper. I made a minesweeper game with the usual 9x9 with 10mines or 16x16 with 40 or 30x16 at 99mines and the rule that you can never lose on the first move (the mine is moved randomly if it should be hit on first move.)
 
 >My play algorithm tries the following on each move, using the first success: 1. find easy no-mine spots (known mines=mine readouts) 2. Find spot pairs with 50% chance of a mines, make two copies of the screen, and set each copy (A or B) with the mine at one of the two location alternatives. The choice then forces other spots to be mines or not. Find all the other spots that are determined by the 50/50 selection. Branch on the three possibilities: a) position A or B cause there to be too many mines somewhere, meaning that one of the positions is impossible and the other is correct; or b) Both seem possible. On b) compare the two case results and look for spots that are open in both cases and return these as the play. This picks up things like 111 running in from an edge where the third 1 in cannot be a mine. 3. If b) occurs but there are no common open spots, search for the next 50%/50% pair and repeat 2. 4. If all 50%/50% spots fail to give a move, guess, selecting amongst the covered spots, initially requiring the chosen spots to be fully surrounded so the risk is mines/total spots in the sequence: a) corners b) edges c)rest of spots. If there are no fully surrounded spots: d) choose least likely to be a mine.
